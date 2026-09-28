@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Noto+Sans+Thai+Looped:wght@700&family=Atkinson+Hyperlegible:wght@700&display=block">
+<style>
+html,body{margin:0;width:1200px;height:630px;overflow:hidden}
+body{background:linear-gradient(165deg,#0E1823 0%,#1E3A55 65%,#35597A 100%);position:relative;color:#fff;font-family:"Atkinson Hyperlegible",sans-serif}
+canvas{position:absolute;inset:0}
+.t{position:absolute;left:72px;top:92px}
+h1{margin:0;font:800 118px/.95 Fraunces,serif;letter-spacing:-2px}
+.th{font:700 60px "Noto Sans Thai Looped",sans-serif;margin-top:18px}
+.q{font-size:34px;margin-top:26px;opacity:.92}
+.u{position:absolute;left:72px;bottom:48px;font-size:26px;background:rgba(255,255,255,.12);padding:8px 16px;border-radius:10px}
+.bars{position:absolute;right:70px;bottom:60px;display:flex;gap:9px;align-items:flex-end;height:250px}
+.bars i{width:26px;background:#8EC5F5;border-radius:5px 5px 0 0;opacity:.9}
+</style></head><body>
+<canvas id="c" width="1200" height="630"></canvas>
+<div class="t"><h1>Rain in<br>Chiang Mai</h1><div class="th">ฝนเชียงใหม่</div><div class="q">Is it raining right now? · ตอนนี้ฝนตกไหม</div></div>
+<div class="bars" id="b"></div>
+<div class="u">nanobotco.github.io/rain-chiang-mai</div>
+<script>
+const g=document.getElementById("c").getContext("2d");g.strokeStyle="rgba(190,220,255,.35)";g.lineWidth=1.6;
+let s=7;const r=()=>(s=(s*16807)%2147483647)/2147483647;
+for(let i=0;i<260;i++){const x=r()*1300,y=r()*630,l=14+r()*30;g.beginPath();g.moveTo(x,y);g.lineTo(x-l*.2,y+l);g.stroke();}
+[11.3,9.6,20.4,54.3,167.5,118.2,148.6,223.3,207.2,123.8,40.9,14.1].forEach(v=>{const i=document.createElement("i");i.style.height=(v/223.3*250)+"px";document.getElementById("b").appendChild(i)});
+</script></body></html>
