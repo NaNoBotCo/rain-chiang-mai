@@ -1,0 +1,7 @@
+# Rain in Chiang Mai · ฝนเชียงใหม่
+
+> Is it raining in Chiang Mai right now? A live answer from RainViewer radar and the Open-Meteo forecast for seven places (old city, airport, Doi Suthep, Mae Rim, Hang Dong, San Kamphaeng, near me). Also: monthly rainfall 1991–2020 (1,139 mm a year, August wettest), a rain clock from airport reports Sep 2024 – Sep 2026, the Royal Rainmaking Project of King Rama IX, Ping River floods at gauge P.1 (record 5.30 m, 5 Oct 2024), and rain legends: the Toad King, the Inthakhin pillar, the cat procession, King Mangrai and the lightning (shrine MD-P5MJ3), the naga count, the Songkran lady. English and Thai.
+
+- [The page](https://nanobotco.github.io/rain-chiang-mai/)
+- Sections: #now #numbers #clock #royal #floods #legends #sources
+- Text CC BY 4.0, NaNoBotCo. Photos from Wikimedia Commons keep their own licences.

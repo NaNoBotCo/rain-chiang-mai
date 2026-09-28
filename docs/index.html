@@ -1,0 +1,677 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="google" content="notranslate">
+<title>Rain in Chiang Mai · ฝนเชียงใหม่</title>
+<meta name="description" content="Is it raining in Chiang Mai right now? Live radar and forecast, the rainfall numbers, the hour rain falls, royal rainmaking, the Ping River floods, and the legends of rain. English and Thai.">
+<link rel="canonical" href="https://nanobotco.github.io/rain-chiang-mai/">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta property="og:type" content="website"><meta property="og:title" content="Is it raining in Chiang Mai right now? · ตอนนี้เชียงใหม่ฝนตกไหม">
+<meta property="og:description" content="Live radar, rainfall numbers, the rain clock, royal rainmaking, the Ping River floods, and the legends of rain.">
+<meta property="og:url" content="https://nanobotco.github.io/rain-chiang-mai/">
+<meta property="og:image" content="https://nanobotco.github.io/rain-chiang-mai/card.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rain streaks over a dark blue sky with the words Rain in Chiang Mai, ฝนเชียงใหม่">
+<meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="th_TH">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://nanobotco.github.io/rain-chiang-mai/card.jpg">
+<link rel="alternate" type="text/plain" href="https://nanobotco.github.io/rain-chiang-mai/llms.txt" title="llms.txt">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Noto+Sans+Thai+Looped:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --ground:#EEF3F7; --panel:#FFFFFF; --ink:#13202B; --muted:#4B5A68; --rule:#D3DDE6;
+  --rain:#1D6AAE; --rain-2:#5B9BD5; --rain-3:#B9D6EF; --warn:#B45309; --sun:#D99A00;
+  --storm-a:#101B27; --storm-b:#23405C;
+  --display:"Fraunces",Georgia,serif;
+  --body:"Atkinson Hyperlegible","Noto Sans Thai Looped",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --thai:"Noto Sans Thai Looped","Sarabun","Thonburi","Tahoma",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0D141B; --panel:#151F29; --ink:#E4ECF3; --muted:#9FB0BF; --rule:#253342;
+    --rain:#6DB0EA; --rain-2:#3F7FBF; --rain-3:#23415F; --warn:#F59E4B; --sun:#F2C14E;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0D141B; --panel:#151F29; --ink:#E4ECF3; --muted:#9FB0BF; --rule:#253342;
+  --rain:#6DB0EA; --rain-2:#3F7FBF; --rain-3:#23415F; --warn:#F59E4B; --sun:#F2C14E;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:4.2rem;scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--ground);color:var(--ink);font:19px/1.6 var(--body);margin:0;overflow-x:hidden}
+a{color:var(--rain);text-underline-offset:3px}
+.th{font-family:var(--thai);font-weight:400}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
+h2{font-size:clamp(34px,6vw,54px);font-weight:800;letter-spacing:-.5px}
+h2 .th{display:block;font-size:.5em;font-weight:600;color:var(--muted);letter-spacing:0;margin-top:.35em}
+h3{font-size:25px;font-weight:700}
+h3 .th{font-size:.8em;color:var(--muted);font-weight:600}
+p{margin:.6em 0}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+
+/* top bar */
+nav.top{position:sticky;top:0;z-index:1100;background:color-mix(in srgb,var(--storm-a) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+nav.top .wrap{display:flex;gap:4px;align-items:center;overflow-x:auto;scrollbar-width:none;padding-top:8px;padding-bottom:8px}
+nav.top .wrap::-webkit-scrollbar{display:none}
+nav.top a{color:#DCE9F5;text-decoration:none;font-size:16px;padding:6px 12px;border-radius:999px;white-space:nowrap;line-height:1.2;text-align:center}
+nav.top a small{display:block;font-family:var(--thai);font-size:12px;opacity:.75}
+nav.top a:hover,nav.top a:focus-visible{background:rgba(255,255,255,.12)}
+nav.top .brand{font-family:var(--display);font-weight:800;font-size:19px;color:#fff;margin-right:6px}
+
+/* hero */
+.hero{position:relative;color:#fff;overflow:hidden;background:linear-gradient(170deg,var(--storm-a) 0%,var(--storm-b) 70%,#35597A 100%);transition:background 1.2s}
+.hero.dry{background:linear-gradient(170deg,#1F6FB2 0%,#4E9BD8 55%,#A9D3F2 100%)}
+.hero.night.dry{background:linear-gradient(170deg,#0B1830 0%,#1B355C 70%,#2B4F7C 100%)}
+.hero canvas.sky{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .wrap{position:relative;padding-top:clamp(40px,8vw,86px);padding-bottom:40px}
+.hero .ask{font:600 clamp(19px,2.6vw,24px)/1.3 var(--body);opacity:.92;margin:0}
+.hero .ask .th{display:block;font-size:.92em;opacity:.9}
+.answer{font:800 clamp(92px,21vw,210px)/.9 var(--display);letter-spacing:-3px;margin:14px 0 6px;min-height:.9em;text-shadow:0 6px 40px rgba(0,0,0,.25)}
+.answer .th{font:700 .34em/1 var(--thai);letter-spacing:0;margin-left:.25em;vertical-align:.55em;opacity:.95}
+.say{font-size:clamp(20px,2.8vw,26px);font-weight:700;margin:0}
+.say .th{display:block;font-size:.85em;font-weight:600;opacity:.9}
+.facts{display:flex;flex-wrap:wrap;gap:8px 18px;margin:16px 0 0;padding:0;list-style:none;font-size:16px;opacity:.9}
+.facts li::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#9FD0FF;margin-right:8px;vertical-align:2px}
+.places{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+.places button{font:600 16px/1.2 var(--body);color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:8px 14px;cursor:pointer;text-align:center}
+.places button small{display:block;font:400 12px var(--thai);opacity:.8}
+.places button[aria-pressed="true"]{background:#fff;color:var(--storm-a);border-color:#fff}
+.places button:focus-visible{outline:3px solid #9FD0FF;outline-offset:2px}
+.next{margin-top:28px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:14px 16px 10px}
+.next h3{font:700 17px var(--body);margin:0 0 8px}
+.next h3 .th{color:inherit;opacity:.8;font-size:.9em}
+.bars{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;align-items:end;height:96px}
+.bars div{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.bars i{display:block;width:100%;max-width:34px;background:#9FD0FF;border-radius:4px 4px 0 0;min-height:2px}
+.bars b{font:700 12px var(--body);margin-bottom:3px;opacity:.9}
+.hours{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;font-size:12px;opacity:.75;text-align:center;margin-top:4px}
+.note{font-size:14px;opacity:.78;margin:10px 0 0}
+#map{height:min(62vh,520px);border-radius:16px;margin-top:22px;border:1px solid rgba(255,255,255,.2);background:#1a2733}
+.mapbar{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:15px}
+.mapbar button{font:700 15px var(--body);background:#fff;color:var(--storm-a);border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
+.mapbar input{flex:1;accent-color:#9FD0FF}
+.leaflet-container{font:14px var(--body)}
+#map{isolation:isolate;z-index:0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .base{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9)}}
+:root[data-theme="dark"] .base{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9)}
+
+/* sections */
+section{padding:clamp(56px,9vw,100px) 0 10px}
+.lead{font-size:clamp(20px,2.4vw,23px);color:var(--muted);max-width:44em}
+.lead .th{display:block;margin-top:.4em}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:26px 0}
+.tile{background:var(--panel);border:1px solid var(--rule);border-radius:16px;padding:16px 18px}
+.tile b{display:block;font:800 clamp(30px,5vw,46px)/1 var(--display);color:var(--rain);letter-spacing:-.5px}
+.tile span{display:block;margin-top:8px;font-size:16px;line-height:1.35}
+.tile span.th{margin-top:2px;color:var(--muted);font-size:15px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:18px;padding:18px 18px 14px;margin:18px 0}
+.card h3{margin-bottom:6px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font:13px var(--body);fill:var(--muted)}
+.chart .lab{font-weight:700;fill:var(--ink);font-size:14px}
+.chart .grid{stroke:var(--rule);stroke-width:1}
+.chart .bar{fill:var(--rain)}
+.chart .bar:hover,.chart .bar.on{fill:var(--rain-2)}
+.chart .hit{fill:transparent;cursor:default}
+details{margin-top:10px;font-size:16px}
+summary{cursor:pointer;color:var(--rain);font-weight:700}
+table{border-collapse:collapse;width:100%;margin-top:8px;font-size:15px}
+th,td{padding:5px 8px;border-bottom:1px solid var(--rule);text-align:right}
+th:first-child,td:first-child{text-align:left}
+.tip{position:fixed;z-index:2000;pointer-events:none;background:var(--ink);color:var(--ground);font:14px/1.35 var(--body);padding:7px 10px;border-radius:8px;opacity:0;transition:opacity .12s;max-width:240px}
+.tip.on{opacity:1}
+.clocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.clock{background:var(--panel);border:1px solid var(--rule);border-radius:18px;padding:16px}
+.clock h3{font-size:22px}
+.clock p{font-size:16px;margin:.3em 0 0}
+.clock .th{color:var(--muted)}
+.clock svg{display:block;width:100%;max-width:300px;margin:6px auto 0}
+.clock .wedge{fill:var(--rain)}
+.clock .wedge:hover{fill:var(--rain-2)}
+.clock .ring{fill:none;stroke:var(--rule)}
+.clock text{font:12px var(--body);fill:var(--muted)}
+.clock .big{font:800 30px var(--display);fill:var(--ink)}
+figure{margin:0}
+.photo{position:relative;border-radius:18px;overflow:hidden;background:var(--rule)}
+.photo img{display:block;width:100%;height:100%;object-fit:cover}
+figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
+figcaption a{color:inherit}
+code{font:600 .9em ui-monospace,Menlo,monospace;background:var(--ground);border:1px solid var(--rule);border-radius:6px;padding:0 5px;white-space:nowrap}
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start;margin-top:24px}
+@media (max-width:760px){.split{grid-template-columns:1fr}}
+.timeline{list-style:none;margin:20px 0 0;padding:0;border-left:3px solid var(--rain-3);padding-left:20px}
+.timeline li{position:relative;margin:0 0 18px}
+.timeline li::before{content:"";position:absolute;left:-29px;top:.45em;width:15px;height:15px;border-radius:50%;background:var(--panel);border:3px solid var(--rain)}
+.timeline .when{font:800 20px var(--display);color:var(--rain);display:block}
+.timeline .th{display:block;color:var(--muted);font-size:16px}
+.stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+.stage{background:var(--panel);border:1px solid var(--rule);border-radius:16px;padding:16px;position:relative;overflow:hidden}
+.stage .n{font:800 60px/1 var(--display);color:var(--rain-3);position:absolute;right:12px;top:4px}
+.stage h3{font-size:22px;position:relative}
+.stage p{font-size:16px;margin:.4em 0 0;position:relative}
+.stage p.th{color:var(--muted)}
+.gauge{display:grid;grid-template-columns:minmax(200px,300px) 1fr;gap:22px;align-items:start}
+@media (max-width:700px){.gauge{grid-template-columns:1fr}}
+.gauge svg text{font:14px var(--body);fill:var(--ink)}
+.gauge svg .m{fill:var(--muted);font-size:12px}
+.legends{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:24px}
+.legend{background:var(--panel);border:1px solid var(--rule);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.legend .photo{border-radius:0;aspect-ratio:16/10}
+.legend .b{padding:16px 18px 18px}
+.legend h3{font-size:24px}
+.legend p{font-size:17px}
+.legend p.th{color:var(--muted);font-size:16px}
+.legend figcaption{padding:6px 18px 0;margin:0}
+.naga{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}
+.naga input{font:700 20px var(--body);width:6.5em;padding:6px 10px;border-radius:10px;border:1px solid var(--rule);background:var(--ground);color:var(--ink)}
+.naga output{font:800 44px/1 var(--display);color:var(--rain)}
+.nagas{display:flex;gap:6px;min-height:34px}
+.nagas svg{width:34px;height:34px}
+.links{padding-left:1.1em}
+.links li{margin:.35em 0;font-size:17px}
+footer{border-top:1px solid var(--rule);margin-top:60px;padding:24px 0 60px;font-size:15px;color:var(--muted)}
+footer .th{display:block}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Sections"><div class="wrap">
+  <a class="brand" href="#now">Rain · ฝน</a>
+  <a href="#now">Now<small>ตอนนี้</small></a>
+  <a href="#numbers">Numbers<small>ตัวเลข</small></a>
+  <a href="#clock">Rain clock<small>นาฬิกาฝน</small></a>
+  <a href="#royal">Royal rain<small>ฝนหลวง</small></a>
+  <a href="#floods">Floods<small>น้ำท่วม</small></a>
+  <a href="#legends">Legends<small>ตำนาน</small></a>
+  <a href="#sources">Sources<small>แหล่งข้อมูล</small></a>
+</div></nav>
+
+<header class="hero" id="now">
+  <canvas class="sky" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <h1 class="ask">Is it raining in Chiang Mai right now?<span class="th" lang="th">ตอนนี้เชียงใหม่ฝนตกไหม</span></h1>
+    <div class="answer" id="answer" aria-live="polite">…</div>
+    <p class="say" id="say">Checking the radar.<span class="th" lang="th">กำลังดูเรดาร์</span></p>
+    <ul class="facts" id="facts"></ul>
+    <div class="places" role="group" aria-label="Place">
+      <button data-lat="18.7883" data-lon="98.9853" data-name="the old city" data-th="เมืองเก่า" aria-pressed="true">Old city<small>เมืองเก่า</small></button>
+      <button data-lat="18.7668" data-lon="98.9626" data-name="the airport" data-th="สนามบิน">Airport<small>สนามบิน</small></button>
+      <button data-lat="18.8048" data-lon="98.9218" data-name="Doi Suthep" data-th="ดอยสุเทพ">Doi Suthep<small>ดอยสุเทพ</small></button>
+      <button data-lat="18.9146" data-lon="98.9449" data-name="Mae Rim" data-th="แม่ริม">Mae Rim<small>แม่ริม</small></button>
+      <button data-lat="18.6858" data-lon="98.9189" data-name="Hang Dong" data-th="หางดง">Hang Dong<small>หางดง</small></button>
+      <button data-lat="18.7445" data-lon="99.1204" data-name="San Kamphaeng" data-th="สันกำแพง">San Kamphaeng<small>สันกำแพง</small></button>
+      <button id="nearme">Near me<small>ใกล้ฉัน</small></button>
+    </div>
+    <div class="next">
+      <h3>Chance of rain, next 12 hours <span class="th" lang="th">โอกาสฝน 12 ชั่วโมงข้างหน้า</span></h3>
+      <div class="bars" id="bars"></div>
+      <div class="hours" id="hours"></div>
+      <p class="note">Forecast chances in this valley run high. From September 2024 to September 2026, when the models said 95–100% at the airport, rain came 59% of the time.<br><span class="th" lang="th">ตัวเลขพยากรณ์ในแอ่งนี้มักสูงเกินจริง ช่วง ก.ย. 2567 – ก.ย. 2569 วันที่แบบจำลองบอก 95–100% ที่สนามบิน ฝนตกจริง 59%</span></p>
+    </div>
+    <div id="map" role="img" aria-label="Rain radar map around Chiang Mai, last two hours"></div>
+    <div class="mapbar"><button id="play" type="button">Pause</button><input id="scrub" type="range" min="0" max="0" value="0" aria-label="Radar frame"><span id="stamp">radar</span></div>
+    <p class="note">Radar: RainViewer. Forecast: Open-Meteo. Map: © OpenStreetMap. The page reloads the radar every five minutes.<br><span class="th" lang="th">เรดาร์จาก RainViewer พยากรณ์จาก Open-Meteo แผนที่ OpenStreetMap โหลดเรดาร์ใหม่ทุกห้านาที</span></p>
+  </div>
+</header>
+
+<main>
+<section id="numbers"><div class="wrap">
+  <h2>Numbers <span class="th" lang="th">ตัวเลขฝน</span></h2>
+  <p class="lead">Chiang Mai is dry for half the year and wet for the other half. The rain comes in with the southwest monsoon in May and leaves in October.<span class="th" lang="th">เชียงใหม่แล้งครึ่งปี ฝนครึ่งปี ฝนมากับมรสุมตะวันตกเฉียงใต้ในเดือนพฤษภาคม และหมดราวเดือนตุลาคม</span></p>
+  <div class="tiles">
+    <div class="tile"><b>1,139 mm</b><span>of rain a year</span><span class="th" lang="th">ฝนต่อปี 1,139 มม.</span></div>
+    <div class="tile"><b>92</b><span>days a year with 1 mm or more</span><span class="th" lang="th">วันที่ฝนตก 1 มม. ขึ้นไป</span></div>
+    <div class="tile"><b>87%</b><span>falls May to October</span><span class="th" lang="th">ตกช่วง พ.ค. – ต.ค.</span></div>
+    <div class="tile"><b>223 mm</b><span>August, the wettest month</span><span class="th" lang="th">สิงหาคม เดือนที่ฝนมากที่สุด</span></div>
+    <div class="tile"><b>9.6 mm</b><span>February, the driest</span><span class="th" lang="th">กุมภาพันธ์ เดือนที่แล้งที่สุด</span></div>
+  </div>
+  <div class="card chart">
+    <h3>Rain by month <span class="th" lang="th">ฝนรายเดือน</span></h3>
+    <p style="font-size:16px;color:var(--muted);margin:0 0 8px">Mean millimetres, 1991–2020, Thai Meteorological Department station at Chiang Mai. Tap a bar for wet days and humidity.</p>
+    <div id="monthly"></div>
+    <details><summary>Table · ตาราง</summary><table id="mtable"><thead><tr><th>Month</th><th>mm</th><th>Days ≥ 1 mm</th><th>Humidity %</th></tr></thead><tbody></tbody></table></details>
+  </div>
+</div></section>
+
+<section id="clock"><div class="wrap">
+  <h2>Rain clock <span class="th" lang="th">นาฬิกาฝน</span></h2>
+  <p class="lead">Each spoke is one hour of the day. Its length is the share of those hours in which Chiang Mai airport reported rain, September 2024 to September 2026.<span class="th" lang="th">แต่ละแฉกคือหนึ่งชั่วโมงของวัน ความยาวคือสัดส่วนชั่วโมงที่สนามบินเชียงใหม่รายงานว่ามีฝน ก.ย. 2567 – ก.ย. 2569</span></p>
+  <div class="clocks" id="clocks"></div>
+  <p style="font-size:17px">Wet-season storms build over the hills after lunch and break on the city between 4 and 6 pm. Hot-season storms come later, often after dark. The forecast models put the hot-season peak at 1 to 3 pm, three to five hours early.</p>
+  <p class="th" lang="th" style="color:var(--muted)">หน้าฝน เมฆก่อตัวบนดอยหลังเที่ยง แล้วตกลงในเมืองช่วงสี่ถึงหกโมงเย็น หน้าร้อน พายุมาช้ากว่านั้น มักหลังค่ำ แบบจำลองพยากรณ์ให้ช่วงพีกหน้าร้อนไว้ที่บ่ายโมงถึงบ่ายสาม เร็วไปสามถึงห้าชั่วโมง</p>
+</div></section>
+
+<section id="royal"><div class="wrap">
+  <h2>Royal rain <span class="th" lang="th">ฝนหลวง</span></h2>
+  <p class="lead">King Bhumibol Adulyadej, Rama IX, started Thailand's cloud-seeding programme. Thais call its rain <i>fon luang</i>, royal rain.<span class="th" lang="th">พระบาทสมเด็จพระบรมชนกาธิเบศร มหาภูมิพลอดุลยเดชมหาราช บรมนาถบพิตร รัชกาลที่ 9 ทรงริเริ่มโครงการฝนหลวง</span></p>
+  <div class="split">
+    <ol class="timeline">
+      <li><span class="when">14 Nov 1955</span>On a visit to the dry northeast, the king notes the drought and the clouds passing over without rain. The idea starts here.<span class="th" lang="th">14 พ.ย. 2498 เสด็จภาคอีสาน ทอดพระเนตรความแห้งแล้ง และเมฆที่ลอยผ่านไปโดยไม่มีฝน</span></li>
+      <li><span class="when">20 Jul 1969</span>First trial, over Khao Yai National Park: dry ice flakes scattered on clouds. Rain was reported.<span class="th" lang="th">20 ก.ค. 2512 ทดลองครั้งแรกเหนืออุทยานแห่งชาติเขาใหญ่ โปรยน้ำแข็งแห้งบนเมฆ</span></li>
+      <li><span class="when">1971</span>The government sets up a rainmaking research and development project.<span class="th" lang="th">2514 รัฐบาลตั้งโครงการค้นคว้าทดลองฝนหลวง</span></li>
+      <li><span class="when">15 Sep 1992</span>A government office for it, today the Department of Royal Rainmaking and Agricultural Aviation, with a regional centre in Chiang Mai.<span class="th" lang="th">15 ก.ย. 2535 ตั้งหน่วยงานถาวร ปัจจุบันคือกรมฝนหลวงและการบินเกษตร มีศูนย์ภาคเหนือที่เชียงใหม่</span></li>
+      <li><span class="when">2001 · 2003</span>EUREKA honours the project in Brussels; the European Patent Office grants the king a patent for weather modification.<span class="th" lang="th">2544 รางวัลจากงาน EUREKA ที่บรัสเซลส์ · 2546 สิทธิบัตรการดัดแปรสภาพอากาศจากสำนักงานสิทธิบัตรยุโรป</span></li>
+      <li><span class="when">14 November</span>Father of Royal Rainmaking Day, every year.<span class="th" lang="th">ทุกวันที่ 14 พฤศจิกายน วันพระบิดาแห่งฝนหลวง</span></li>
+    </ol>
+    <figure>
+      <div class="photo" style="aspect-ratio:3/2"><img src="img/kaset-plane.jpg" alt="A white and green agricultural aviation helicopter lifting off" loading="lazy" width="1400" height="933"></div>
+      <figcaption>A KASET helicopter of the agricultural aviation fleet, Khon Kaen. <a href="https://commons.wikimedia.org/wiki/File:KASET-18301_(16552094326).jpg">Alec Wilson</a>, CC BY-SA 2.0.</figcaption>
+    </figure>
+  </div>
+  <h3 style="margin-top:34px">How a cloud is seeded <span class="th" lang="th">ขั้นตอนทำฝนหลวง</span></h3>
+  <div class="stages">
+    <div class="stage"><span class="n">1</span><h3>Agitate <span class="th" lang="th">ก่อกวน</span></h3><p>Planes release salt powders into moist morning air to start clouds building.</p><p class="th" lang="th">โปรยสารเคมีในอากาศชื้นตอนเช้า ให้เมฆเริ่มก่อตัว</p></div>
+    <div class="stage"><span class="n">2</span><h3>Fatten <span class="th" lang="th">เลี้ยงให้อ้วน</span></h3><p>More chemicals feed the growing cloud so its droplets grow.</p><p class="th" lang="th">เติมสารเข้าไปในเมฆ ให้เม็ดน้ำโตขึ้น</p></div>
+    <div class="stage"><span class="n">3</span><h3>Attack <span class="th" lang="th">โจมตี</span></h3><p>Planes seed the base and top of the heavy cloud to bring the rain down where it is needed.</p><p class="th" lang="th">โปรยสารที่ฐานและยอดเมฆหนา ให้ฝนตกลงในพื้นที่เป้าหมาย</p></div>
+  </div>
+  <p style="font-size:17px">Later the king worked out the "super sandwich": seeding warm cloud low and cold cloud high at the same time. In Chiang Mai the flights also go up in the smoke season, February to April, against drought, forest fire and haze.</p>
+  <p class="th" lang="th" style="color:var(--muted)">ต่อมาทรงคิดวิธี "ซูเปอร์แซนด์วิช" โปรยสารในเมฆอุ่นชั้นล่างและเมฆเย็นชั้นบนพร้อมกัน ที่เชียงใหม่ เครื่องบินฝนหลวงขึ้นบินในหน้าหมอกควันด้วย ช่วงกุมภาพันธ์ถึงเมษายน เพื่อสู้ภัยแล้ง ไฟป่า และฝุ่นควัน</p>
+</div></section>
+
+<section id="floods"><div class="wrap">
+  <h2>Floods <span class="th" lang="th">น้ำท่วม</span></h2>
+  <p class="lead">The Ping River runs through the city. Its gauge at Nawarat Bridge, station P.1, is the number the city watches. Above 3.70 m, the river leaves its banks.<span class="th" lang="th">แม่น้ำปิงไหลผ่านกลางเมือง สถานีวัดน้ำ P.1 ที่สะพานนวรัฐคือตัวเลขที่คนเชียงใหม่เฝ้าดู เกิน 3.70 เมตร น้ำล้นตลิ่ง</span></p>
+  <div class="gauge">
+    <div class="card" style="margin:0" id="gauge"></div>
+    <div>
+      <ol class="timeline" style="margin-top:0">
+        <li><span class="when">About 1290</span>King Mangrai's first capital, <a href="https://motdang.net/cm/p/wiang-kum-kam-4350066707.html">Wiang Kum Kam</a> (<code>MD-9M5HH</code>), stood on the Ping. Years of floods drove him out, and in 1296 he founded Chiang Mai on higher ground. River silt buried the old town; digging uncovered it in 1984.<span class="th" lang="th">พญามังรายสร้างเวียงกุมกามริมน้ำปิง น้ำท่วมหลายปีจนต้องย้าย แล้วสร้างเชียงใหม่บนที่สูงกว่าในปี 1839 (พ.ศ.) ตะกอนน้ำปิงฝังเวียงเก่าไว้ ขุดพบอีกครั้งในปี 2527</span></li>
+        <li><span class="when">Aug–Sep 2005</span>A tropical depression from Typhoon Damrey drops 100–200 mm a day on the hills. P.1 peaks at 4.93 m in late September.<span class="th" lang="th">พายุดีเปรสชันจากไต้ฝุ่นดอมเรย์ ฝนบนดอยวันละ 100–200 มม. P.1 สูงสุด 4.93 เมตร ปลายเดือนกันยายน 2548</span></li>
+        <li><span class="when">2011</span>The year of Thailand's great flood; in Chiang Mai the Ping reaches about 4.9 m.<span class="th" lang="th">ปีน้ำท่วมใหญ่ทั้งประเทศ ที่เชียงใหม่น้ำปิงขึ้นราว 4.9 เมตร 2554</span></li>
+        <li><span class="when">5 Oct 2024</span>5.30 m, the highest on the gauge's record. Water fills the old city's east side and the Night Bazaar.<span class="th" lang="th">5 ต.ค. 2567 น้ำปิงสูง 5.30 เมตร สูงที่สุดเท่าที่มีบันทึก น้ำท่วมฝั่งตะวันออกของเมืองเก่าและไนท์บาซาร์</span></li>
+      </ol>
+      <p style="font-size:17px">River now: <a href="https://www.thaiwater.net/">ThaiWater</a> · <a href="https://flood.awareai.io/">AwareAI flood forecast</a> · <a href="https://maenamflow.com/">MaeNam Flow</a>. Gauge P.67 upstream leads Nawarat Bridge by six to eight hours.<br><span class="th" lang="th" style="color:var(--muted)">ระดับน้ำตอนนี้ ดูได้ที่ลิงก์ข้างบน สถานี P.67 ต้นน้ำขึ้นก่อน P.1 ราวหกถึงแปดชั่วโมง</span></p>
+    </div>
+  </div>
+  <div class="split" style="grid-template-columns:1fr 1fr">
+    <figure><div class="photo" style="aspect-ratio:3/4"><img src="img/after-rain.jpg" alt="A man rides a motorbike through a flooded Chiang Mai street carrying shopping bags" loading="lazy" width="1050" height="1400"></div>
+      <figcaption>After the rainstorm, Chiang Mai. <a href="https://commons.wikimedia.org/wiki/File:After_the_Rainstorm_-_Chiang_Mai_-_Thailand_(34330177384).jpg">Adam Jones</a>, CC BY-SA 2.0.</figcaption></figure>
+    <div>
+      <figure><div class="photo" style="aspect-ratio:3/2"><img src="img/nawarat.jpg" alt="Nawarat Bridge lit at night over the Ping River" loading="lazy" width="1400" height="931"></div>
+        <figcaption>Nawarat Bridge, home of gauge P.1. <a href="https://commons.wikimedia.org/wiki/File:Chiang_Mai,_Nawarat_Bridge_0071.jpg">Moritz Schmaltz</a>, CC BY-SA 2.0.</figcaption></figure>
+      <figure style="margin-top:16px"><div class="photo" style="aspect-ratio:3/2"><img src="img/wiang-kum-kam.jpg" alt="A white stepped chedi at Wiang Kum Kam with horse carts in front" loading="lazy" width="1280" height="852"></div>
+        <figcaption>Wiang Kum Kam, the capital the floods took. <a href="https://commons.wikimedia.org/wiki/File:WiangKumKam1.jpg">LannaPhoto</a>, CC BY-SA 4.0.</figcaption></figure>
+    </div>
+  </div>
+</div></section>
+
+<section id="legends"><div class="wrap">
+  <h2>Legends <span class="th" lang="th">ตำนานฝน</span></h2>
+  <p class="lead">Before radar there were nagas, a toad king, a city pillar, a wet cat and a king struck by lightning.<span class="th" lang="th">ก่อนมีเรดาร์ มีพญานาค พญาคันคาก เสาอินทขิล แมวเปียก และกษัตริย์ที่ถูกฟ้าผ่า</span></p>
+  <div class="legends">
+    <article class="legend">
+      <div class="photo"><img src="img/rocket.jpg" alt="Men watch a bamboo rocket launch in a cloud of smoke against a blue sky" loading="lazy" width="1400" height="933"></div>
+      <figcaption>Rocket festival, Kalasin, 2024. <a href="https://commons.wikimedia.org/wiki/File:Rocket_festival_kalasin_thailand_2024.jpg">Ian Taylor</a>, CC BY 4.0.</figcaption>
+      <div class="b">
+        <h3>The Toad King <span class="th" lang="th">พญาคันคาก</span></h3>
+        <p>A prince born with toad skin grows so beautiful that the world forgets to honour Phaya Thaen, the sky god. The sky god stops the rain for seven years, seven months and seven days. The toad king marches on heaven along a road the termites build, and wins. The peace terms: rain for the rice fields. Every May, across the Mekong basin, people fire bamboo rockets, <i>bang fai</i>, to remind the sky of its promise.</p>
+        <p class="th" lang="th">เจ้าชายผิวคางคกกลายเป็นชายงามจนผู้คนลืมบูชาพญาแถน พญาแถนจึงไม่ให้ฝนตกเจ็ดปีเจ็ดเดือนเจ็ดวัน พญาคันคากยกทัพขึ้นฟ้าตามทางที่ปลวกก่อ ชนะพญาแถน สัญญาว่าจะส่งฝนให้ทุกปี คนจึงจุดบั้งไฟขึ้นฟ้าเตือนพญาแถนทุกเดือนหก</p>
+      </div>
+    </article>
+    <article class="legend">
+      <div class="photo"><img src="img/inthakin.jpg" alt="A gilded Lanna shrine with naga balustrades at Wat Inthakhin Sadue Mueang" loading="lazy" width="1400" height="1006"></div>
+      <figcaption>Wat Inthakhin Sadue Mueang, where the pillar first stood. <a href="https://commons.wikimedia.org/wiki/File:Chiang_Mai_-_Wat_Inthakin_Sadue_Muang_-_0001.jpg">Stefan Fussan</a>, CC BY-SA 3.0.</figcaption>
+      <div class="b">
+        <h3>The city pillar <span class="th" lang="th">เสาอินทขิล</span></h3>
+        <p>King Mangrai set up Chiang Mai's pillar in 1296; King Kawila moved it to <a href="https://motdang.net/cm/p/wat-chedi-luang-243018795.html">Wat Chedi Luang</a> (<code>MD-2V22Q</code>) in 1800. At the start of the rains, the Lanna eighth month (about May–June), the city honours it for a week: "in with the eighth month, out with the ninth." A Buddha image named <i>Fon Saen Ha</i>, "five hundred thousand rains", rides through the streets while people splash it with water to call the rain.</p>
+        <p class="th" lang="th">พญามังรายตั้งเสาอินทขิลในปี 1839 พระเจ้ากาวิละย้ายมาไว้ที่วัดเจดีย์หลวงในปี 2343 งานใส่ขันดอกจัดต้นหน้าฝน "เดือนแปดเข้า เดือนเก้าออก" แห่พระพุทธรูปฝนแสนห่ารอบเมือง คนสาดน้ำใส่เพื่อขอฝน</p>
+      </div>
+    </article>
+    <article class="legend">
+      <div class="b">
+        <h3>The cat procession <span class="th" lang="th">แห่นางแมว</span></h3>
+        <p>In a dry year, villagers carry a female cat in a basket from house to house, singing, and splash it. The cat cries; the cry calls the clouds. A grey, "cloud-coloured" cat is best. In August 2026, one village used a Doraemon doll in place of a live cat.</p>
+        <p class="th" lang="th">ปีแล้ง ชาวบ้านใส่แมวตัวเมียในกระบุง แห่ไปตามบ้าน ร้องเพลงและสาดน้ำ แมวร้อง เสียงร้องเรียกเมฆ แมวสีสวาดสีเมฆดีที่สุด เดือนสิงหาคม 2569 มีหมู่บ้านใช้ตุ๊กตาโดราเอมอนแทนแมวจริง</p>
+      </div>
+    </article>
+    <article class="legend">
+      <div class="b">
+        <h3>The king and the lightning <span class="th" lang="th">ฟ้าผ่าพญามังราย</span></h3>
+        <p>The chronicles say lightning struck and killed King Mangrai in 1311, in the middle of the city he founded. The <a href="https://motdang.net/cm/p/king-mangrai-memorial-shrine-6726115189.html">King Mangrai Memorial Shrine</a>, place ID <code>MD-P5MJ3</code>, marks the spot, at the crossroads of Ratchadamnoen and Phra Pokklao roads. People still bring flowers, candles and incense.</p>
+        <p class="th" lang="th">ตามตำนาน พญามังรายถูกฟ้าผ่าสิ้นพระชนม์กลางเวียงเชียงใหม่ ปี 1854 <a href="https://motdang.net/cm/p/king-mangrai-memorial-shrine-6726115189.html">หอพญามังราย</a> รหัสที่ <code>MD-P5MJ3</code> ตั้งอยู่ตรงจุดนั้น ที่สี่แยกกลางเวียง ถนนราชดำเนินตัดถนนพระปกเกล้า คนยังมาถวายดอกไม้ ธูป เทียน</p>
+      </div>
+    </article>
+    <article class="legend">
+      <div class="b">
+        <h3>How many nagas give water <span class="th" lang="th">นาคให้น้ำ</span></h3>
+        <p>Each Songkran, the court astrologers announce how many nagas give water this year, one to seven. One naga means plenty of rain. Seven means drought: each naga leaves the work to the others and keeps the water in its belly. 2026 has three. The almanac also splits the year's 500 rains: 50 fall on the human world, 100 on the ocean, 150 on the Himavanta forest, 200 on the rim of the universe.</p>
+        <p class="th" lang="th">ทุกสงกรานต์ โหรหลวงประกาศว่าปีนี้นาคให้น้ำกี่ตัว นาคตัวเดียว น้ำมาก เจ็ดตัว แล้ง เพราะต่างตัวต่างเกี่ยงกัน กลืนน้ำไว้ในท้อง ปี 2569 นาคให้น้ำ 3 ตัว ฝนตก 500 ห่า ตกในโลกมนุษย์ 50 ห่า มหาสมุทร 100 ห่า ป่าหิมพานต์ 150 ห่า เขาจักรวาล 200 ห่า</p>
+        <div class="naga"><label for="nagayear">Year · ปี</label><input id="nagayear" type="number" value="2026" min="1500" max="2600" inputmode="numeric"><output id="nagan" for="nagayear">3</output><div class="nagas" id="nagas" aria-hidden="true"></div></div>
+        <p style="font-size:15px;color:var(--muted)" id="nagasay"></p>
+        <p style="font-size:15px;color:var(--muted)">Count = (5 × Lesser Era year) ÷ 7, the remainder, with 0 read as 7. It matches every almanac found for 2020–2026. 2024 had seven nagas, the driest sign; the Ping set its record that October.<br><span class="th" lang="th">จำนวนนาค = (5 × จุลศักราช) หาร 7 เอาเศษ ถ้าเศษ 0 นับเป็น 7 ตรงกับปฏิทินทุกปีที่หาพบ 2563–2569 ปี 2567 นาคให้น้ำ 7 ตัว แต่น้ำปิงขึ้นสูงสุดเป็นประวัติการณ์ในเดือนตุลาคม</span></p>
+      </div>
+    </article>
+    <article class="legend">
+      <div class="photo"><img src="img/ping.jpg" alt="The brown Ping River in flood season between green banks under grey cloud" loading="lazy" width="1400" height="1050"></div>
+      <figcaption>The Ping in Chiang Mai. <a href="https://commons.wikimedia.org/wiki/File:Ping_River_in_Chiang_Mai_4.jpg">Christophe95</a>, CC BY-SA 4.0.</figcaption>
+      <div class="b">
+        <h3>The Songkran lady <span class="th" lang="th">นางสงกรานต์</span></h3>
+        <p>Each new year one of seven daughters of Kabil Maha Phrom carries her father's head around Mount Meru, and her day of the week reads the year. For 2026 it is Raksot Thewi, and the reading is little water and patchy rain.</p>
+        <p class="th" lang="th">ทุกปีใหม่ ธิดาหนึ่งในเจ็ดองค์ของท้าวกบิลพรหมเชิญเศียรบิดาเวียนรอบเขาพระสุเมรุ ปี 2569 คือรากษสเทวี คำทำนาย น้ำน้อย ฝนตกไม่ทั่วถึง</p>
+      </div>
+    </article>
+  </div>
+</div></section>
+
+<section id="sources"><div class="wrap">
+  <h2>Sources <span class="th" lang="th">แหล่งข้อมูล</span></h2>
+  <ul class="links">
+    <li>Live: <a href="https://www.rainviewer.com/api.html">RainViewer radar</a> · <a href="https://open-meteo.com/">Open-Meteo</a> (CC BY 4.0) · <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></li>
+    <li>Monthly normals 1991–2020: <a href="https://en.wikipedia.org/wiki/Chiang_Mai#Climate">Wikipedia, Chiang Mai climate</a>, from the Thai Meteorological Department</li>
+    <li>Rain clock and forecast checks: NaNoBotCo weather research, Chiang Mai METAR (VTCC) and SYNOP 48327 via <a href="https://www.ogimet.com/">ogimet</a>, September 2024 – September 2026</li>
+    <li><a href="https://en.wikipedia.org/wiki/Royal_Rainmaking_Project">Wikipedia: Royal Rainmaking Project</a> · <a href="https://thaiembdc.org/2020/12/03/articles-the-king-and-the-cloud-the-story-behind-the-royal-rainmaking-project/">Royal Thai Embassy: The King and the Cloud</a> · <a href="https://www.huahintoday.com/thailand-news/father-royal-rainmaking-day/">Hua Hin Today: Father of Royal Rainmaking Day</a></li>
+    <li><a href="https://world.thaipbs.or.th/detail/chiang-mai-in-deeper-water-as-ping-river-reaches-record-high-level/54982">Thai PBS: Ping reaches record level</a> · <a href="https://www.bangkokpost.com/thailand/general/2878053/chiang-mai-flood-crisis-worsens">Bangkok Post: flood crisis worsens</a> · <a href="https://hess.copernicus.org/articles/12/959/2008/">HESS: the 2005 Ping River flood</a> · <a href="https://www.researchgate.net/publication/390886083_Floods_and_Water_Management_in_Chiang_Mai_and_the_Upper_Ping_catchment_Northern_Thailand">Floods and water management in the Upper Ping</a> · <a href="https://en.wikipedia.org/wiki/Ping_River">Wikipedia: Ping River</a></li>
+    <li><a href="https://thailandfoundation.or.th/isaan-rocket-festival-an-ancient-promise-of-rain/">Thailand Foundation: the rocket festival</a> · <a href="https://www.chiangmaicitylife.com/clg/see-do/festivals-events/glorious-rainfall-marks-the-start-of-inthakin-city-pillar-festival/">Citylife: Inthakin festival</a> · <a href="https://en.wikipedia.org/wiki/Inthakhin_(pillar)">Wikipedia: Inthakhin</a> · <a href="https://en.wikipedia.org/wiki/Hae_Nang_Maew">Wikipedia: Hae Nang Maew</a> · <a href="https://www.khaosodenglish.com/featured/2026/08/04/doraemon-replaces-real-cat-in-thai-rain-ritual/amp/">Khaosod English: Doraemon replaces cat</a></li>
+    <li><a href="https://www.thairath.co.th/newspaper/columns/957992">ไทยรัฐ: นาคให้น้ำ</a> · <a href="https://www.thaipbs.or.th/news/content/503327">Thai PBS: นางสงกรานต์ 2569</a> · <a href="https://www.thairath.co.th/horoscope/belief/2925519">ไทยรัฐ: คำทำนายสงกรานต์ 2569</a></li>
+    <li>Places: <a href="https://motdang.net/">Mot Dang</a> place pages and IDs</li>
+    <li>Photos from <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>, credited under each.</li>
+  </ul>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  Text CC BY 4.0, NaNoBotCo. Photos keep their own licences, named under each. Checked 28 September 2026.
+  <span class="th" lang="th">ข้อความ CC BY 4.0 ภาพถ่ายใช้สัญญาอนุญาตของเจ้าของ ตรวจเมื่อ 28 กันยายน 2569</span>
+</div></footer>
+
+<div class="tip" id="tip" role="tooltip"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+
+/* tooltip */
+const tip = $("#tip");
+document.addEventListener("pointermove", e => {
+  const t = e.target.closest && e.target.closest("[data-tip]");
+  if (!t) { tip.classList.remove("on"); return; }
+  tip.innerHTML = t.getAttribute("data-tip");
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.min(innerWidth - w - 8, Math.max(8, e.clientX - w / 2)) + "px";
+  tip.style.top = Math.max(8, e.clientY - h - 14) + "px";
+  tip.classList.add("on");
+});
+document.addEventListener("pointerleave", () => tip.classList.remove("on"));
+
+/* ---------- monthly chart ---------- */
+const M = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MT = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+const MM = [11.3,9.6,20.4,54.3,167.5,118.2,148.6,223.3,207.2,123.8,40.9,14.1];
+const DAYS = [1.0,0.7,2.1,4.7,12.0,11.6,14.4,17.1,14.7,9.1,3.0,1.2];
+const RH = [68.9,58.2,53.6,57.4,70.9,76.3,78.9,82.0,81.7,78.9,75.0,72.6];
+function monthly(){
+  const host = $("#monthly"); host.innerHTML = "";
+  const W = Math.max(320, Math.min(900, host.clientWidth || 720)), H = W < 500 ? 260 : 300, L = 34, B = 46, T = 20, top = 250;
+  const svg = el("svg", {viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":"Bar chart of mean monthly rainfall; August wettest at 223 mm, February driest at 9.6 mm"});
+  const y = v => H - B - (v / top) * (H - B - T);
+  for (const g of [0,50,100,150,200,250]) {
+    el("line", {x1:L, x2:W, y1:y(g), y2:y(g), class:"grid"}, svg);
+    el("text", {x:L-8, y:y(g)+4, "text-anchor":"end"}, svg).textContent = g;
+  }
+  const bw = (W - L) / 12;
+  MM.forEach((v, i) => {
+    const x = L + i*bw + bw*0.18, w = bw*0.64, yy = y(v), h = y(0) - yy;
+    const r = Math.min(4, w/2, h);
+    el("path", {class:"bar", d:`M${x},${y(0)}V${yy+r}Q${x},${yy} ${x+r},${yy}H${x+w-r}Q${x+w},${yy} ${x+w},${yy+r}V${y(0)}Z`}, svg);
+    el("rect", {class:"hit", x:L+i*bw, y:T, width:bw, height:H-B-T,
+      "data-tip":`<b>${M[i]} · ${MT[i]}</b><br>${v} mm<br>${DAYS[i]} wet days · วันฝนตก<br>humidity ${RH[i]}%`}, svg);
+    el("text", {x:L+i*bw+bw/2, y:H-B+20, "text-anchor":"middle"}, svg).textContent = W < 500 ? M[i][0] : M[i];
+    el("text", {x:L+i*bw+bw/2, y:H-B+38, "text-anchor":"middle", style:`font-family:var(--thai);font-size:${W < 500 ? 9.5 : 12}px`}, svg).textContent = MT[i];
+    if (i === 7 || i === 1) el("text", {x:L+i*bw+bw/2, y:yy-8, "text-anchor":"middle", class:"lab"}, svg).textContent = v + " mm";
+  });
+  host.appendChild(svg);
+  $("#mtable tbody").innerHTML = MM.map((v,i)=>`<tr><td>${M[i]} · ${MT[i]}</td><td>${v}</td><td>${DAYS[i]}</td><td>${RH[i]}</td></tr>`).join("") +
+    `<tr><td><b>Year · ทั้งปี</b></td><td><b>1,139.2</b></td><td><b>91.6</b></td><td></td></tr>`;
+}
+monthly();
+let mw = innerWidth; addEventListener("resize", () => { if (Math.abs(innerWidth - mw) > 40) { mw = innerWidth; monthly(); } });
+
+/* ---------- rain clocks ---------- */
+const CLOCK = {
+  rainy:{en:"Rainy season", th:"หน้าฝน", m:"Jun–Oct · มิ.ย.–ต.ค.", v:[18,18,18,18,19,18,19,17,18,14,11,12,15,21,31,34,37,35,32,31,27,24,20,16],
+         say:"Peak 4–6 pm: rain in more than a third of those hours.", sth:"พีก 16–18 น. ฝนตกเกินหนึ่งในสามของชั่วโมงเหล่านั้น"},
+  hot:  {en:"Hot season", th:"หน้าร้อน", m:"Mar–May · มี.ค.–พ.ค.", v:[15,12,8,7,7,7,7,5,6,4,2,2,4,5,8,12,16,14,12,14,16,14,13,12],
+         say:"Storms after 4 pm and again around 8 pm; mornings stay dry.", sth:"พายุหลังสี่โมงเย็น และอีกรอบราวสองทุ่ม ช่วงเช้าแห้ง"},
+  cool: {en:"Cool season", th:"หน้าหนาว", m:"Nov–Feb · พ.ย.–ก.พ.", v:[3,4,3,3,5,5,5,4,4,4,4,2,3,2,4,4,5,6,6,5,6,7,5,3],
+         say:"Rain in under 7% of any hour.", sth:"ฝนตกไม่ถึง 7% ในทุกชั่วโมง"}
+};
+(function clocks(){
+  const host = $("#clocks");
+  for (const key of ["rainy","hot","cool"]) {
+    const c = CLOCK[key], S = 300, cx = S/2, cy = S/2, R0 = 34, R1 = 132, max = 40;
+    const div = document.createElement("div"); div.className = "clock";
+    div.innerHTML = `<h3>${c.en} <span class="th" lang="th">${c.th}</span></h3><p class="th">${c.m}</p>`;
+    const svg = el("svg", {viewBox:`0 0 ${S} ${S}`, role:"img", "aria-label":`${c.en}: share of hours with rain by hour of day. ${c.say}`});
+    for (const p of [10,20,30,40]) el("circle", {cx, cy, r:R0+(R1-R0)*p/max, class:"ring"}, svg);
+    const peak = Math.max(...c.v);
+    c.v.forEach((v, h) => {
+      const a0 = (h/24)*2*Math.PI - Math.PI/2 + 0.02, a1 = ((h+1)/24)*2*Math.PI - Math.PI/2 - 0.02;
+      const r = R0 + (R1-R0)*v/max;
+      const P = (a, rr) => `${cx+rr*Math.cos(a)},${cy+rr*Math.sin(a)}`;
+      el("path", {class:"wedge", d:`M${P(a0,R0)}L${P(a0,r)}A${r},${r} 0 0 1 ${P(a1,r)}L${P(a1,R0)}A${R0},${R0} 0 0 0 ${P(a0,R0)}Z`,
+        "data-tip":`<b>${String(h).padStart(2,"0")}:00</b><br>rain in ${v}% of hours<br><span lang="th">ฝนตก ${v}% ของชั่วโมง</span>`}, svg);
+    });
+    [["0",0],["6",6],["12",12],["18",18]].forEach(([t,h]) => {
+      const a = (h/24)*2*Math.PI - Math.PI/2, rr = R1 + 12;
+      el("text", {x:cx+rr*Math.cos(a), y:cy+rr*Math.sin(a)+4, "text-anchor":"middle"}, svg).textContent = t;
+    });
+    el("text", {x:cx, y:cy+4, "text-anchor":"middle", class:"big"}, svg).textContent = peak + "%";
+    el("text", {x:cx, y:cy+22, "text-anchor":"middle"}, svg).textContent = "peak";
+    div.appendChild(svg);
+    const p = document.createElement("p"); p.innerHTML = `${c.say}<br><span class="th" lang="th">${c.sth}</span>`; div.appendChild(p);
+    host.appendChild(div);
+  }
+})();
+
+/* ---------- flood gauge ---------- */
+(function gauge(){
+  const W = 280, H = 420, x0 = 70, top = 30, bot = 390, maxm = 6;
+  const y = m => bot - (m/maxm)*(bot-top);
+  const svg = el("svg", {viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":"River gauge at Nawarat Bridge: banks at 3.70 m, 2005 at 4.93 m, 2011 about 4.9 m, 2024 record 5.30 m"});
+  const defs = el("defs", {}, svg);
+  const lg = el("linearGradient", {id:"water", x1:0, y1:0, x2:0, y2:1}, defs);
+  el("stop", {offset:0, "stop-color":"var(--rain-2)"}, lg); el("stop", {offset:1, "stop-color":"var(--rain)"}, lg);
+  const water = el("path", {fill:"url(#water)", opacity:.8}, svg);
+  el("rect", {x:x0, y:top, width:30, height:bot-top, fill:"var(--panel)", "fill-opacity":.55, stroke:"var(--ink)", "stroke-width":2, rx:3}, svg);
+  for (let m = 0; m <= maxm; m += 0.5) {
+    const whole = m % 1 === 0;
+    el("line", {x1:x0, x2:x0+(whole?30:14), y1:y(m), y2:y(m), stroke:"var(--ink)", "stroke-width":whole?2:1}, svg);
+    if (whole) el("text", {x:x0-8, y:y(m)+5, "text-anchor":"end", class:"m"}, svg).textContent = m + " m";
+  }
+  let t = 0, level = 0; const target = 5.30;
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function wave(){
+    level += (target - level) * 0.03; t += 0.05;
+    const yy = y(still ? target : level); let d = `M20,${bot}L20,${yy}`;
+    for (let xx = 20; xx <= W-10; xx += 10) d += `L${xx},${yy + Math.sin(xx/18 + t)*3}`;
+    water.setAttribute("d", d + `L${W-10},${bot}Z`);
+    if (!still) requestAnimationFrame(wave);
+  }
+  const marks = [[3.70,"Banks · ตลิ่ง 3.70", "var(--warn)"],[4.915,"2005 · 2011 ≈ 4.9","var(--ink)"],[5.30,"2024 · 5.30 m","var(--ink)"]];
+  const g = el("g", {}, svg);
+  marks.forEach(([m, txt, col]) => {
+    el("line", {x1:x0-4, x2:W-10, y1:y(m), y2:y(m), stroke:col, "stroke-width":2, "stroke-dasharray":m===3.70?"6 4":"0"}, g);
+    const tx = el("text", {x:x0+40, y:y(m)-6, style:"font-weight:700;paint-order:stroke;stroke:var(--panel);stroke-width:4px"}, g); tx.textContent = txt;
+  });
+  $("#gauge").appendChild(svg);
+  const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { wave(); io.disconnect(); } });
+  io.observe(svg);
+  water.setAttribute("d", `M20,${bot}L${W-10},${bot}Z`);
+})();
+
+/* ---------- naga count ---------- */
+(function naga(){
+  const inp = $("#nagayear"), out = $("#nagan"), row = $("#nagas"), say = $("#nagasay");
+  const glyph = '<svg viewBox="0 0 34 34"><path d="M4 26c4-8 8 4 12-4s8 4 12-4c1.5-3 1-7-2-8" fill="none" stroke="var(--rain)" stroke-width="3.2" stroke-linecap="round"/><circle cx="25" cy="9" r="2.4" fill="var(--rain)"/></svg>';
+  function upd(){
+    let yr = parseInt(inp.value, 10); if (!yr) return;
+    if (yr > 2400) yr -= 543;                 // Buddhist Era typed
+    const cs = yr - 638, n = ((5*cs) % 7 + 7) % 7 || 7;
+    out.textContent = n; row.innerHTML = glyph.repeat(n);
+    say.innerHTML = `${yr} CE · พ.ศ. ${yr+543} · จ.ศ. ${cs} → ${n} naga${n>1?"s":""} · นาคให้น้ำ ${n} ตัว — ` +
+      (n <= 2 ? "plenty of water · น้ำมาก" : n >= 6 ? "a dry sign · น้ำน้อย" : "middling · ปานกลาง");
+  }
+  inp.addEventListener("input", upd); upd();
+})();
+
+/* ---------- rain in the sky ---------- */
+const sky = $(".hero canvas.sky"), ctx = sky.getContext("2d");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let drops = [], want = 0, sun = 0;
+function size(){ const r = sky.getBoundingClientRect(); sky.width = r.width*devicePixelRatio; sky.height = r.height*devicePixelRatio; }
+addEventListener("resize", size); size();
+function frame(){
+  const W = sky.width, H = sky.height, k = devicePixelRatio;
+  ctx.clearRect(0,0,W,H);
+  if (sun > 0) {
+    const g = ctx.createRadialGradient(W*.84, H*.1, 0, W*.84, H*.1, 260*k);
+    g.addColorStop(0, `rgba(255,230,150,${.55*sun})`); g.addColorStop(1, "rgba(255,230,150,0)");
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+  }
+  while (drops.length < want) drops.push({x:Math.random()*W*1.2, y:Math.random()*-H, v:(9+Math.random()*9)*k, l:(14+Math.random()*22)*k});
+  if (drops.length > want) drops.length = want;
+  ctx.strokeStyle = "rgba(190,220,255,.45)"; ctx.lineWidth = 1.3*k; ctx.beginPath();
+  for (const d of drops) {
+    ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.l*.18, d.y + d.l);
+    d.y += d.v; d.x -= d.v*.18;
+    if (d.y > H) { d.y = -d.l; d.x = Math.random()*W*1.2; }
+  }
+  ctx.stroke();
+  if (!reduce) requestAnimationFrame(frame);
+}
+function setSky(kind, mmh){
+  const hero = $(".hero"), hr = +new Date().toLocaleString("en-GB",{timeZone:"Asia/Bangkok",hour:"2-digit",hour12:false});
+  const night = hr < 6 || hr >= 19;
+  hero.classList.toggle("night", night);
+  hero.classList.toggle("dry", kind === "no" || kind === "near");
+  sun = (kind === "no" && !night) ? 1 : 0;
+  want = kind === "yes" ? Math.min(420, 90 + (mmh||0)*60) : kind === "maybe" ? 40 : kind === "near" ? 14 : 0;
+  if (reduce) { drops = []; frame(); }
+}
+if (!reduce) requestAnimationFrame(frame);
+
+/* ---------- is it raining ---------- */
+let here = {lat:18.7883, lon:98.9853, name:"the old city", th:"เมืองเก่า"};
+const Z = 7, SCHEME = 2;
+let maps = null;
+const dir8 = (dx, dy) => { const a = (Math.atan2(dx, -dy)*180/Math.PI + 360) % 360; const i = Math.round(a/45) % 8;
+  return [["north","ทิศเหนือ"],["north-east","ทิศตะวันออกเฉียงเหนือ"],["east","ทิศตะวันออก"],["south-east","ทิศตะวันออกเฉียงใต้"],["south","ทิศใต้"],["south-west","ทิศตะวันตกเฉียงใต้"],["west","ทิศตะวันตก"],["north-west","ทิศตะวันตกเฉียงเหนือ"]][i]; };
+const tile = (lat, lon) => { const n = 2**Z, r = lat*Math.PI/180;
+  return {fx:(lon+180)/360*n, fy:(1 - Math.log(Math.tan(r) + 1/Math.cos(r))/Math.PI)/2*n}; };
+const hhmm = t => new Date(t*1000).toLocaleTimeString("en-GB",{timeZone:"Asia/Bangkok",hour:"2-digit",minute:"2-digit"});
+
+async function radarAt(lat, lon){
+  if (!maps) maps = await (await fetch("https://api.rainviewer.com/public/weather-maps.json")).json();
+  const f = maps.radar.past[maps.radar.past.length-1];
+  const {fx, fy} = tile(lat, lon), tx = Math.floor(fx), ty = Math.floor(fy);
+  const c = document.createElement("canvas"); c.width = c.height = 768; const g = c.getContext("2d", {willReadFrequently:true});
+  await Promise.all([-1,0,1].flatMap(dx => [-1,0,1].map(dy => new Promise(res => {
+    const im = new Image(); im.crossOrigin = "anonymous";
+    im.onload = () => { g.drawImage(im, (dx+1)*256, (dy+1)*256); res(); }; im.onerror = res;
+    im.src = `${maps.host}${f.path}/256/${Z}/${tx+dx}/${ty+dy}/${SCHEME}/1_1.png`;
+  }))));
+  const px = Math.round((fx-tx+1)*256), py = Math.round((fy-ty+1)*256);
+  const kmpx = 40075*Math.cos(lat*Math.PI/180)/(256*2**Z);
+  const R = Math.round(25/kmpx), d = g.getImageData(px-R, py-R, 2*R+1, 2*R+1).data;
+  let wetHere = 0, cellsHere = 0, best = null;
+  for (let j = -R; j <= R; j++) for (let i = -R; i <= R; i++) {
+    const dist = Math.hypot(i, j); if (dist > R) continue;
+    const a = d[((j+R)*(2*R+1) + (i+R))*4 + 3];
+    if (dist <= 3) { cellsHere++; if (a > 0) wetHere++; }
+    else if (a > 0 && (!best || dist < best.dist)) best = {dist, i, j};
+  }
+  return {time:f.time, here:wetHere/cellsHere, near: best ? {km:Math.max(4, Math.round(best.dist*kmpx)), dir:dir8(best.i, best.j)} : null};
+}
+async function modelAt(lat, lon){
+  const u = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=precipitation,rain,showers,weather_code,cloud_cover,temperature_2m,relative_humidity_2m&hourly=precipitation_probability,precipitation&forecast_hours=12&timezone=Asia%2FBangkok`;
+  return (await fetch(u)).json();
+}
+function rate(mmh){
+  if (mmh >= 7.6) return ["Heavy rain", "ฝนตกหนัก"];
+  if (mmh >= 2.5) return ["Steady rain", "ฝนตกปานกลาง"];
+  return ["Light rain", "ฝนตกเล็กน้อย"];
+}
+async function check(){
+  const {lat, lon, name} = here, nameTh = here.th;
+  const [rad, mod] = await Promise.allSettled([radarAt(lat, lon), modelAt(lat, lon)]);
+  const R = rad.status === "fulfilled" ? rad.value : null, O = mod.status === "fulfilled" ? mod.value : null;
+  const cur = O && O.current ? O.current : null;
+  const mmh = cur ? (cur.precipitation || 0) * 4 : 0;   // current block is 15 minutes
+  let kind, en, th;
+  if (R && R.here > 0) { kind = "yes"; [en, th] = rate(mmh); en += name === "you" ? " where you are." : ` over ${name}.`; th += name === "you" ? nameTh : `ที่${nameTh}`;
+  } else if (R && R.near) { kind = "near"; en = `Not here. Rain ${R.near.km} km to the ${R.near.dir[0]}.`; th = `ที่นี่ยังไม่ตก ฝนอยู่ห่างไป ${R.near.km} กม. ${R.near.dir[1]}`;
+  } else if (cur && cur.precipitation > 0) { kind = R ? "maybe" : "yes"; en = R ? "Radar sees none here; the forecast model has showers." : "The forecast model has rain here now."; th = R ? "เรดาร์ไม่เห็นฝนตรงนี้ แต่แบบจำลองบอกว่ามีฝนประปราย" : "แบบจำลองบอกว่าฝนตกอยู่";
+  } else if (R || cur) { kind = "no"; en = "No rain within 25 km."; th = "ไม่มีฝนในรัศมี 25 กม.";
+  } else { $("#answer").textContent = "?"; $("#say").innerHTML = `The radar and the forecast did not answer. Try again in a minute.<span class="th" lang="th">เรดาร์และพยากรณ์ไม่ตอบ ลองใหม่อีกสักครู่</span>`; return; }
+  const big = {yes:["Yes","ตก"], near:["No","ยัง"], maybe:["Maybe","อาจจะ"], no:["No","ไม่ตก"]}[kind];
+  $("#answer").innerHTML = `${big[0]}<span class="th" lang="th">${big[1]}</span>`;
+  $("#say").innerHTML = `${en}<span class="th" lang="th">${th}</span>`;
+  const facts = [];
+  if (R) facts.push(`Radar ${hhmm(R.time)}`);
+  if (cur) facts.push(`${cur.temperature_2m.toFixed(0)} °C`, `humidity ${cur.relative_humidity_2m}%`, `cloud ${cur.cloud_cover}%`, `${(cur.precipitation||0).toFixed(1)} mm in 15 min`);
+  $("#facts").innerHTML = facts.map(f => `<li>${f}</li>`).join("");
+  setSky(kind, mmh);
+  if (O && O.hourly) {
+    const P = O.hourly.precipitation_probability, A = O.hourly.precipitation, T = O.hourly.time;
+    $("#bars").innerHTML = P.map((p, i) => `<div data-tip="<b>${T[i].slice(11,16)}</b><br>${p}% chance · โอกาส<br>${A[i]} mm"><b>${p}</b><i style="height:${Math.max(2, p*.72)}%"></i></div>`).join("");
+    $("#hours").innerHTML = T.map(t => `<span>${t.slice(11,13)}</span>`).join("");
+  }
+  if (mapReady) marker.setLatLng([lat, lon]);
+}
+
+/* places */
+document.querySelectorAll(".places button[data-lat]").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".places button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  here = {lat:+b.dataset.lat, lon:+b.dataset.lon, name:b.dataset.name, th:b.dataset.th};
+  if (mapReady) map.setView([here.lat, here.lon], 9);
+  check();
+}));
+$("#nearme").addEventListener("click", () => {
+  const b = $("#nearme");
+  navigator.geolocation && navigator.geolocation.getCurrentPosition(p => {
+    document.querySelectorAll(".places button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    here = {lat:p.coords.latitude, lon:p.coords.longitude, name:"you", th:"ตรงที่คุณอยู่"};
+    if (mapReady) map.setView([here.lat, here.lon], 9);
+    check();
+  }, () => { $("#say").insertAdjacentHTML("beforeend", `<span class="th" style="font-size:.7em">Location is off in this browser. · เบราว์เซอร์ปิดตำแหน่งอยู่</span>`); });
+});
+
+/* ---------- radar map ---------- */
+let map, marker, mapReady = false, frames = [], layers = [], idx = 0, playing = true, timer;
+function buildMap(){
+  if (!window.L) return;
+  map = L.map("map", {zoomControl:true, attributionControl:true, scrollWheelZoom:false}).setView([here.lat, here.lon], 8);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom:17, className:"base",
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · radar <a href="https://www.rainviewer.com/">RainViewer</a>'}).addTo(map);
+  marker = L.circleMarker([here.lat, here.lon], {radius:8, color:"#fff", weight:3, fillColor:"#E0452B", fillOpacity:1}).addTo(map);
+  mapReady = true;
+}
+async function loadFrames(){
+  if (!mapReady) return;
+  maps = await (await fetch("https://api.rainviewer.com/public/weather-maps.json")).json();
+  layers.forEach(l => map.removeLayer(l));
+  frames = maps.radar.past;
+  layers = frames.map(f => L.tileLayer(`${maps.host}${f.path}/256/{z}/{x}/{y}/${SCHEME}/1_1.png`, {opacity:0, maxNativeZoom:Z, maxZoom:17, zIndex:5}).addTo(map));
+  const s = $("#scrub"); s.max = frames.length - 1; show(frames.length - 1);
+}
+function show(i){
+  if (!layers.length) return;
+  layers[idx] && layers[idx].setOpacity(0);
+  idx = i; layers[idx].setOpacity(.72);
+  $("#scrub").value = idx; $("#stamp").textContent = "radar " + hhmm(frames[idx].time);
+}
+function loop(){ clearInterval(timer); if (playing && !reduce) timer = setInterval(() => show((idx + 1) % layers.length), 700); }
+$("#play").addEventListener("click", () => { playing = !playing; $("#play").textContent = playing ? "Pause" : "Play"; loop(); });
+$("#scrub").addEventListener("input", e => { playing = false; $("#play").textContent = "Play"; loop(); show(+e.target.value); });
+if (reduce) { playing = false; $("#play").textContent = "Play"; }
+
+buildMap();
+loadFrames().then(loop).catch(() => {});
+check();
+setInterval(() => { maps = null; loadFrames().then(loop).catch(() => {}); check(); }, 5*60*1000);
+})();
+</script>
+</body></html>
