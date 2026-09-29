@@ -5,3 +5,4 @@
 - [The page](https://nanobotco.github.io/rain-chiang-mai/)
 - Sections: #now #numbers #clock #royal #floods #legends #sources
 - Text CC BY 4.0, NaNoBotCo. Photos from Wikimedia Commons keep their own licences.
+- Reader poll: GET https://mot-dang-claims.nanobotco.workers.dev/rain?hours=1 lists answers (none, light, heavy) with time and a point to ~1 km. POST {"answer":"light"} counts one, from Chiang Mai and Chiang Rai only.

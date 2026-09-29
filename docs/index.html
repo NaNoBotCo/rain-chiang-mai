@@ -88,6 +88,24 @@ nav.top .brand{font-family:var(--display);font-weight:800;font-size:19px;color:#
 .bars b{font:700 12px var(--body);margin-bottom:3px;opacity:.9}
 .hours{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;font-size:12px;opacity:.75;text-align:center;margin-top:4px}
 .note{font-size:14px;opacity:.78;margin:10px 0 0}
+.poll{margin-top:22px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:14px 16px 12px}
+.poll h3{font:700 17px var(--body);margin:0 0 10px}
+.poll h3 .th{color:inherit;opacity:.8;font-size:.9em;display:block}
+.votes{display:flex;flex-wrap:wrap;gap:8px}
+.votes button{font:700 17px/1.2 var(--body);color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:9px 16px;cursor:pointer;text-align:center}
+.votes button small{display:block;font:400 13px var(--thai);opacity:.85}
+.votes button[aria-pressed="true"]{background:#fff;color:var(--storm-a);border-color:#fff}
+.votes button:focus-visible{outline:3px solid #9FD0FF;outline-offset:2px}
+.votes button:disabled{opacity:.6;cursor:wait}
+.tally{display:flex;height:12px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.12);margin:14px 0 6px}
+.tally i{display:block;height:100%}
+.tally .none,.key .none::before{background:#F2C14E}
+.tally .light,.key .light::before{background:#9FD0FF}
+.tally .heavy,.key .heavy::before{background:#123F8C}
+.key{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:15px;margin:0;padding:0;list-style:none}
+.key li::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:0}
+.pollsay{font-size:15px;margin:6px 0 0;opacity:.92}
+.pollsay .th{display:block}
 #map{height:min(62vh,520px);border-radius:16px;margin-top:22px;border:1px solid rgba(255,255,255,.2);background:#1a2733}
 .mapbar{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:15px}
 .mapbar button{font:700 15px var(--body);background:#fff;color:var(--storm-a);border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
@@ -202,6 +220,18 @@ footer .th{display:block}
       <button data-lat="18.6858" data-lon="98.9189" data-name="Hang Dong" data-th="หางดง">Hang Dong<small>หางดง</small></button>
       <button data-lat="18.7445" data-lon="99.1204" data-name="San Kamphaeng" data-th="สันกำแพง">San Kamphaeng<small>สันกำแพง</small></button>
       <button id="nearme">Near me<small>ใกล้ฉัน</small></button>
+    </div>
+    <div class="poll" id="poll">
+      <h3>Is it raining where you are? <span class="th" lang="th">ตรงที่คุณอยู่ ฝนตกไหม</span></h3>
+      <div class="votes" role="group" aria-label="Your answer">
+        <button type="button" data-answer="none">Dry<small>ไม่ตก</small></button>
+        <button type="button" data-answer="light">Light rain<small>ฝนปรอย</small></button>
+        <button type="button" data-answer="heavy">Heavy rain<small>ฝนหนัก</small></button>
+      </div>
+      <div class="tally" id="tally" aria-hidden="true"></div>
+      <ul class="key" id="key"></ul>
+      <p class="pollsay" id="pollsay"></p>
+      <p class="note">Answers from Chiang Mai and Chiang Rai count, to about 1 km, and show on the map below as dots. They join the reader count at <a href="https://motdang.net/" style="color:inherit">Mot Dang</a>.<br><span class="th" lang="th">นับคำตอบจากเชียงใหม่และเชียงราย ละเอียดราว 1 กม. ขึ้นเป็นจุดบนแผนที่ข้างล่าง รวมกับยอดของ Mot Dang</span></p>
     </div>
     <div class="next">
       <h3>Chance of rain, next 12 hours <span class="th" lang="th">โอกาสฝน 12 ชั่วโมงข้างหน้า</span></h3>
@@ -668,10 +698,58 @@ $("#play").addEventListener("click", () => { playing = !playing; $("#play").text
 $("#scrub").addEventListener("input", e => { playing = false; $("#play").textContent = "Play"; loop(); show(+e.target.value); });
 if (reduce) { playing = false; $("#play").textContent = "Play"; }
 
+/* ---------- reader poll ---------- */
+const OBS = "https://mot-dang-claims.nanobotco.workers.dev/rain";
+const WORD = {none:["dry","ไม่ตก"], light:["light rain","ฝนปรอย"], heavy:["heavy rain","ฝนหนัก"]};
+const MARK = {none:"#F2C14E", light:"#9FD0FF", heavy:"#123F8C"};
+let dots = null;
+const mine = (() => { try { const v = JSON.parse(localStorage.getItem("rainvote") || "null"); return v && Date.now() - v.t < 3600e3 ? v.a : null; } catch { return null; } })();
+if (mine) document.querySelectorAll(".votes button").forEach(b => b.setAttribute("aria-pressed", b.dataset.answer === mine));
+async function tally(own){
+  let r; try { r = await (await fetch(OBS + "?hours=1" + (own ? "&t=" + Date.now() : ""))).json(); } catch { return; }
+  const reps = (r && r.reports) || [], n = {none:0, light:0, heavy:0};
+  if (own && !reps.some(x => x.at === own.at)) reps.push(own);   // the list lags a new answer by up to a minute
+  reps.forEach(x => { if (x.answer in n) n[x.answer]++; });
+  const tot = reps.length;
+  $("#tally").innerHTML = tot ? Object.keys(n).filter(k => n[k]).map(k => `<i class="${k}" style="width:${n[k]/tot*100}%"></i>`).join("") : "";
+  $("#key").innerHTML = tot ? Object.keys(n).map(k => `<li class="${k}">${n[k]} ${WORD[k][0]} · <span lang="th">${WORD[k][1]}</span></li>`).join("") : "";
+  if (!$("#pollsay").dataset.hold) $("#pollsay").innerHTML = tot
+    ? `${tot} ${tot === 1 ? "reader" : "readers"} in the last hour.<span class="th" lang="th">ผู้อ่าน ${tot} คนในชั่วโมงที่ผ่านมา</span>`
+    : `No answers yet this hour.<span class="th" lang="th">ชั่วโมงนี้ยังไม่มีใครตอบ</span>`;
+  if (!mapReady) return;
+  if (dots) map.removeLayer(dots);
+  dots = L.layerGroup(reps.filter(x => x.answer in MARK).map(x => L.circleMarker([x.lat, x.lng], {radius:6, color:"#13202B", weight:1.5, fillColor:MARK[x.answer], fillOpacity:.95})
+    .bindTooltip(`${WORD[x.answer][0]} · ${WORD[x.answer][1]}<br>${new Date(x.at).toLocaleTimeString("en-GB",{timeZone:"Asia/Bangkok",hour:"2-digit",minute:"2-digit"})}`))).addTo(map);
+}
+document.querySelectorAll(".votes button").forEach(b => b.addEventListener("click", async () => {
+  const all = document.querySelectorAll(".votes button"), say = $("#pollsay");
+  all.forEach(x => x.disabled = true);
+  const body = {answer:b.dataset.answer};
+  if (here.name === "you") { body.lat = here.lat; body.lng = here.lon; }
+  let res, out;
+  try { res = await fetch(OBS, {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(body)}); out = await res.json(); } catch {}
+  all.forEach(x => x.disabled = false);
+  say.dataset.hold = 1;
+  if (res && res.ok) {
+    all.forEach(x => x.setAttribute("aria-pressed", x === b));
+    try { localStorage.setItem("rainvote", JSON.stringify({a:b.dataset.answer, t:Date.now()})); } catch {}
+    say.innerHTML = `Counted: ${WORD[b.dataset.answer][0]}. Thank you.<span class="th" lang="th">นับแล้ว ${WORD[b.dataset.answer][1]} ขอบคุณ</span>`;
+  } else if (res && res.status === 400 && out && /outside/.test(out.error || "")) {
+    say.innerHTML = `The count takes answers from Chiang Mai and Chiang Rai. Try Near me if you are here.<span class="th" lang="th">นับเฉพาะคนที่อยู่เชียงใหม่และเชียงราย ถ้าอยู่ที่นี่ ลองกด ใกล้ฉัน ก่อน</span>`;
+  } else if (res && res.status === 429) {
+    say.innerHTML = `That is a lot of answers from one place this hour. Try later.<span class="th" lang="th">ชั่วโมงนี้ตอบจากที่เดียวกันหลายครั้งแล้ว ลองใหม่ทีหลัง</span>`;
+  } else {
+    say.innerHTML = `The count did not answer. Try again in a minute.<span class="th" lang="th">ระบบนับไม่ตอบ ลองใหม่อีกสักครู่</span>`;
+  }
+  tally(res && res.ok ? out : null);
+  setTimeout(() => { delete say.dataset.hold; }, 8000);
+}));
+
 buildMap();
+tally();
 loadFrames().then(loop).catch(() => {});
 check();
-setInterval(() => { maps = null; loadFrames().then(loop).catch(() => {}); check(); }, 5*60*1000);
+setInterval(() => { maps = null; loadFrames().then(loop).catch(() => {}); check(); tally(); }, 5*60*1000);
 })();
 </script>
 </body></html>
